@@ -22,7 +22,7 @@ async function getQuizContentJSON(prompt, movie) {
         {
             const response = await groq.chat.completions.create({
                 messages: [{ role: "user", content: `${prompt} ${movie}` }],
-                model: "llama-3.2-11b-vision-preview",
+                model: "llama-3.1-8b-instant",
             });
     
             let quizContent = response.choices[0].message.content;
@@ -50,7 +50,7 @@ async function getMovieSummary(prompt, movie) {
     try {
         const response = await groq.chat.completions.create({
             messages: [{ role: "user", content: `${prompt} ${movie}` }],
-            model: "gemma2-9b-it",
+            model: "llama-3.1-8b-instant",
         });
 
         if (!response?.choices?.length) {
@@ -71,7 +71,7 @@ async function isValid(prompt, movie) {
     try {
         const response = await groq.chat.completions.create({
             messages: [{ role: "user", content: `${prompt} ${movie}` }],
-            model: "llama-3.2-11b-vision-preview",
+            model: "llama-3.1-8b-instant",
         });
 
         if (!response?.choices?.length) {

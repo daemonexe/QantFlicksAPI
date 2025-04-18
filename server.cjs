@@ -12,43 +12,6 @@ const PORT = 5000;
 app.use(cors()); 
 app.use(bodyParser.json()); 
 
-const quizPrompt = `
-Generate a JSON-formatted quiz set with 15 trivia questions about the movie "{movieName}". 
-The questions should be strictly from the show/movie like events happening do not relate with real life
-The JSON must strictly follow this format:
-
-{
-  "questions": [
-    {
-      "question": "A trivia question about the movie",
-      "answer": "The correct answer",
-      "options": [
-        "Option 1",
-        "Option 2",
-        "Option 3",
-        "Option 4"
-      ]
-    }
-  ]
-}
-
-### Strict Formatting Rules:
-1. **The output must be a valid JSON string**, correctly formatted for JavaScript parsing.
-2. **Use ONLY double quotes (")** for keys and string values. Do **NOT** use backslashes (\\), newlines (\\n), or special escape sequences.
-3. **Do NOT include any markdown, code blocks, or extra explanations**. The response must be **pure JSON only**.
-4. **Ensure exactly 15 unique trivia questions** related to the movie's **plot, characters, or production details**.
-5. **Randomize the position of the correct answer** within the "options" array.
-6. **Ensure all options are realistic and related to the movie**.
-7. **No non-ASCII characters, special symbols, or escape sequences.** The output must be **plain JSON text**.
-8. **The response must be a valid JavaScript string** when stored in a variable—do **not** use characters that require escaping in JavaScript.
-9. **Each question must have 4 unique answer options**, with the correct answer placed at a **random** index.
-10. **The "answer" key must always match the correct answer in the "options" array**, regardless of its position.
-
-- All keys and values use double quotes ("").
-- There are NO trailing commas.
-- Nested arrays and objects are properly formatted.
-`;
-
 
 let condition = `
 with your knowledge check if is a valid movie or tv show if you could not find 
@@ -56,7 +19,6 @@ anything just return a string 'false', if you did 'true'
 
 `
 
-module.exports = { quizPrompt };
 
 
 // POST endpoint to receive movie name
@@ -135,11 +97,10 @@ app.post('/search', async (req, res) => {
 
       let summary = await getMovieSummary(summaryPrompt,movieName);
 
-      let questions = await getQuizContentJSON(quizPrompt, movieName);
-      let questionJSON = JSON.parse(questions);
+
 
       res.json({ movieName: movieName, movieSummary: summary, 
-        quizContent: questionJSON, details : movieData });
+        details : movieData });
 
     // returning a .JSON file containing all the details needed to be filled in 
 
